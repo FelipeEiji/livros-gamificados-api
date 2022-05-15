@@ -1,7 +1,7 @@
 import { SignUpController } from '@/presentation/controllers';
-import { MissingParamError } from '@/presentation/errors';
-import { ValidationSpy } from '@/tests/presentation/mocks';
-import { badRequest } from '@/presentation/helpers';
+import { MissingParamError, ServerError } from '@/presentation/errors';
+import { ValidationSpy, AddAccountSpy } from '@/tests/presentation/mocks';
+import { badRequest, serverError } from '@/presentation/helpers';
 
 import * as faker from 'faker';
 
@@ -17,14 +17,17 @@ const mockRequest = (): SignUpController.Request => {
 
 type SutTypes = {
     sut: SignUpController;
+    addAccountSpy: AddAccountSpy;
     validationSpy: ValidationSpy;
 };
 
 const makeSut = (): SutTypes => {
+    const addAccountSpy = new AddAccountSpy();
     const validationSpy = new ValidationSpy();
-    const sut = new SignUpController(validationSpy);
+    const sut = new SignUpController(addAccountSpy, validationSpy);
     return {
         sut,
+        addAccountSpy,
         validationSpy,
     };
 };
@@ -42,5 +45,14 @@ describe('SignUp Controller', () => {
         validationSpy.error = new MissingParamError(faker.random.word());
         const httpResponse = await sut.handle(mockRequest());
         expect(httpResponse).toEqual(badRequest(validationSpy.error));
+    });
+
+    test('Should return 500 if AddAccount throws an error', async () => {
+        const { sut, addAccountSpy } = makeSut();
+        jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(() => {
+            throw new Error();
+        });
+        const httpResponse = await sut.handle(mockRequest());
+        expect(httpResponse).toEqual(serverError(new ServerError(null)));
     });
 });
