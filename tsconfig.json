@@ -12,6 +12,8 @@
         "baseUrl": "./",
         "incremental": true,
         "strictNullChecks": true,
-        "esModuleInterop": true,
-    }
+        "esModuleInterop": true
+    },
+    "include": ["src/**/*.ts", "tests/**/*.test.ts"],
+    "exclude": []
 }
