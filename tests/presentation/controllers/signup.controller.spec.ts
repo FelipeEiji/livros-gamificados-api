@@ -55,4 +55,15 @@ describe('SignUp Controller', () => {
         const httpResponse = await sut.handle(mockRequest());
         expect(httpResponse).toEqual(serverError(new ServerError(null)));
     });
+
+    test('Should call AddAccount with correct values', async () => {
+        const { sut, addAccountSpy } = makeSut();
+        const request = mockRequest();
+        await sut.handle(request);
+        expect(addAccountSpy.params).toEqual({
+            name: request.name,
+            email: request.email,
+            password: request.password,
+        });
+    });
 });
