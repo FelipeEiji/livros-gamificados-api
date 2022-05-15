@@ -1,7 +1,11 @@
 import { SignUpController } from '@/presentation/controllers';
-import { MissingParamError, ServerError } from '@/presentation/errors';
+import {
+    MissingParamError,
+    ServerError,
+    EmailInUseError,
+} from '@/presentation/errors';
 import { ValidationSpy, AddAccountSpy } from '@/tests/presentation/mocks';
-import { badRequest, serverError } from '@/presentation/helpers';
+import { badRequest, serverError, forbidden } from '@/presentation/helpers';
 
 import * as faker from 'faker';
 
@@ -65,5 +69,11 @@ describe('SignUp Controller', () => {
             email: request.email,
             password: request.password,
         });
+    });
+    test('Should return 403 if AddAccount returns false', async () => {
+        const { sut, addAccountSpy } = makeSut();
+        addAccountSpy.result = false;
+        const httpResponse = await sut.handle(mockRequest());
+        expect(httpResponse).toEqual(forbidden(new EmailInUseError()));
     });
 });
