@@ -4,7 +4,7 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "start": "node dist/main/server.js",
+        "start": "sucrase-node src/main/server.ts",
         "test": "jest --passWithNoTests --runInBand --no-cache",
         "test:unit": "npm test -- --watch -c jest-unit-config.js",
         "test:integration": "npm test -- --watch -c jest-integration-config.js"
@@ -27,6 +27,7 @@
     },
     "devDependencies": {
         "@shelf/jest-mongodb": "^2.2.2",
+        "@types/express": "^4.17.13",
         "@types/faker": "5.5.8",
         "@types/jest": "^27.5.1",
         "@types/node": "^17.0.29",
@@ -44,6 +45,7 @@
         "jest-sonar-reporter": "^2.0.0",
         "prettier": "^2.6.2",
         "sonarqube-scanner": "^2.8.1",
+        "sucrase": "^3.21.0",
         "ts-jest": "^28.0.2",
         "ts-node": "^10.7.0",
         "typescript": "^4.6.3"
