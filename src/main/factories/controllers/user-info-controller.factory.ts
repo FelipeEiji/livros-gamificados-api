@@ -1,10 +1,7 @@
-import { makeDbUserInfo, makeUserInfoValidation } from '@/main/factories';
+import { makeDbUserInfo } from '@/main/factories';
 import { UserInfoController } from '@/presentation/controllers';
 
 export const makeUserInfoController = (): UserInfoController => {
-    const userInfoController = new UserInfoController(
-        makeDbUserInfo(),
-        makeUserInfoValidation(),
-    );
+    const userInfoController = new UserInfoController(makeDbUserInfo());
     return userInfoController;
 };
