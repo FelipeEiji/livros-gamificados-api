@@ -9,7 +9,14 @@ import { EmailValidatorAdapter } from '@/infra/validators';
 
 export const makeSignUpValidation = (): ValidationComposite => {
     const validations: Validation[] = [];
-    for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
+    for (const field of [
+        'firstName',
+        'lastName',
+        'email',
+        'password',
+        'passwordConfirmation',
+        'subscriptionPlan',
+    ]) {
         validations.push(new RequiredFieldValidation(field));
     }
     validations.push(

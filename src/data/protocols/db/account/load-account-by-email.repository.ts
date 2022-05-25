@@ -7,7 +7,9 @@ export interface LoadAccountByEmailRepository {
 export namespace LoadAccountByEmailRepository {
     export type Result = {
         id: string;
-        name: string;
+        firstName: string;
+        lastName: string;
         password: string;
+        subscriptionPlan: string;
     };
 }

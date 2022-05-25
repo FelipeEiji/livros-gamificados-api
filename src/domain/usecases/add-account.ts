@@ -4,9 +4,11 @@ export interface AddAccount {
 
 export namespace AddAccount {
     export type Params = {
-        name: string;
+        firstName: string;
+        lastName: string;
         email: string;
         password: string;
+        subscriptionPlan: string;
     };
 
     export type Result = boolean;

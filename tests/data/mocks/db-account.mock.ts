@@ -39,8 +39,10 @@ export class LoadAccountByEmailRepositorySpy
     email: string;
     result = {
         id: faker.datatype.uuid(),
-        name: faker.name.findName(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.findName(),
         password: faker.internet.password(),
+        subscriptionPlan: faker.random.word(),
     };
 
     async loadByEmail(

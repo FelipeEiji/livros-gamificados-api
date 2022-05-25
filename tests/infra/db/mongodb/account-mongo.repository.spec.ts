@@ -57,7 +57,11 @@ describe('AccountMongoRepository', () => {
             const account = await sut.loadByEmail(addAccountParams.email);
             expect(account).toBeTruthy();
             expect(account.id).toBeTruthy();
-            expect(account.name).toBe(addAccountParams.name);
+            expect(account.firstName).toBe(addAccountParams.firstName);
+            expect(account.lastName).toBe(addAccountParams.lastName);
+            expect(account.subscriptionPlan).toBe(
+                addAccountParams.subscriptionPlan,
+            );
             expect(account.password).toBe(addAccountParams.password);
         });
 

@@ -49,7 +49,9 @@ export class AccountMongoRepository
             {
                 projection: {
                     _id: 1,
-                    name: 1,
+                    firstName: 1,
+                    lastName: 1,
+                    subscriptionPlan: 1,
                     password: 1,
                 },
             },

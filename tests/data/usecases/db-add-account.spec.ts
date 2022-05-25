@@ -53,8 +53,10 @@ describe('DbAddAccount Usecase', () => {
         const addAccountParams = mockAddAccountParams();
         await sut.add(addAccountParams);
         expect(addAccountRepositorySpy.params).toEqual({
-            name: addAccountParams.name,
+            firstName: addAccountParams.firstName,
+            lastName: addAccountParams.lastName,
             email: addAccountParams.email,
+            subscriptionPlan: addAccountParams.subscriptionPlan,
             password: hasherSpy.digest,
         });
     });

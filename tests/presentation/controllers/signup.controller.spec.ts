@@ -4,7 +4,11 @@ import {
     ServerError,
     EmailInUseError,
 } from '@/presentation/errors';
-import { ValidationSpy, AddAccountSpy } from '@/tests/presentation/mocks';
+import {
+    ValidationSpy,
+    AddAccountSpy,
+    AuthenticationSpy,
+} from '@/tests/presentation/mocks';
 import { badRequest, serverError, forbidden } from '@/presentation/helpers';
 
 import * as faker from 'faker';
@@ -12,10 +16,12 @@ import * as faker from 'faker';
 const mockRequest = (): SignUpController.Request => {
     const password = faker.internet.password();
     return {
-        name: faker.name.findName(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.findName(),
         email: faker.internet.email(),
         password,
         passwordConfirmation: password,
+        subscriptionPlan: faker.random.word(),
     };
 };
 
@@ -28,7 +34,12 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
     const addAccountSpy = new AddAccountSpy();
     const validationSpy = new ValidationSpy();
-    const sut = new SignUpController(addAccountSpy, validationSpy);
+    const authenticationSpy = new AuthenticationSpy();
+    const sut = new SignUpController(
+        addAccountSpy,
+        validationSpy,
+        authenticationSpy,
+    );
     return {
         sut,
         addAccountSpy,
@@ -65,9 +76,11 @@ describe('SignUp Controller', () => {
         const request = mockRequest();
         await sut.handle(request);
         expect(addAccountSpy.params).toEqual({
-            name: request.name,
+            firstName: request.firstName,
+            lastName: request.lastName,
             email: request.email,
             password: request.password,
+            subscriptionPlan: request.subscriptionPlan,
         });
     });
     test('Should return 403 if AddAccount returns false', async () => {

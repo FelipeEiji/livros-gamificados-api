@@ -1,12 +1,13 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols';
-import { AddAccount } from '@/domain/usecases';
+import { AddAccount, Authentication } from '@/domain/usecases';
 import { badRequest, serverError, ok, forbidden } from '@/presentation/helpers';
-import { EmailInUseError } from '../errors';
+import { EmailInUseError } from '@/presentation/errors';
 
 export class SignUpController implements Controller {
     constructor(
         private readonly addAccount: AddAccount,
         private readonly validation: Validation,
+        private readonly authentication: Authentication,
     ) {}
 
     async handle(request: SignUpController.Request): Promise<HttpResponse> {
@@ -15,16 +16,23 @@ export class SignUpController implements Controller {
             if (error) {
                 return badRequest(error);
             }
-            const { name, email, password } = request;
+            const { firstName, lastName, email, password, subscriptionPlan } =
+                request;
             const isValid = await this.addAccount.add({
-                name,
+                firstName,
+                lastName,
                 email,
                 password,
+                subscriptionPlan,
             });
             if (!isValid) {
                 return forbidden(new EmailInUseError());
             }
-            return ok({});
+            const authenticationModel = await this.authentication.auth({
+                email,
+                password,
+            });
+            return ok(authenticationModel);
         } catch (error) {
             return serverError(error);
         }
@@ -33,9 +41,11 @@ export class SignUpController implements Controller {
 
 export namespace SignUpController {
     export type Request = {
-        name: string;
+        firstName: string;
+        lastName: string;
         email: string;
         password: string;
         passwordConfirmation: string;
+        subscriptionPlan: string;
     };
 }
