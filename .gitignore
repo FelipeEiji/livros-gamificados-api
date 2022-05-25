@@ -5,3 +5,4 @@ coverage
 globalConfig.json
 .scannerwork
 test-report.xml
+.env
