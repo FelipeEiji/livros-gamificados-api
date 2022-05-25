@@ -1,7 +1,11 @@
 import {
     AddAccountRepository,
     CheckAccountByEmailRepository,
+    LoadAccountByEmailRepository,
+    UpdateAccessTokenRepository,
 } from '@/data/protocols';
+
+import faker from 'faker';
 
 export class AddAccountRepositorySpy implements AddAccountRepository {
     params: AddAccountRepository.Params;
@@ -26,5 +30,35 @@ export class CheckAccountByEmailRepositorySpy
     ): Promise<CheckAccountByEmailRepository.Result> {
         this.email = email;
         return this.result;
+    }
+}
+
+export class LoadAccountByEmailRepositorySpy
+    implements LoadAccountByEmailRepository
+{
+    email: string;
+    result = {
+        id: faker.datatype.uuid(),
+        name: faker.name.findName(),
+        password: faker.internet.password(),
+    };
+
+    async loadByEmail(
+        email: string,
+    ): Promise<LoadAccountByEmailRepository.Result> {
+        this.email = email;
+        return this.result;
+    }
+}
+
+export class UpdateAccessTokenRepositorySpy
+    implements UpdateAccessTokenRepository
+{
+    id: string;
+    token: string;
+
+    async updateAccessToken(id: string, token: string): Promise<void> {
+        this.id = id;
+        this.token = token;
     }
 }
