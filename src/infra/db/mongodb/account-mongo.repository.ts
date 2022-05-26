@@ -1,11 +1,10 @@
+import { MongoHelper } from '@/infra/db';
 import {
     AddAccountRepository,
     CheckAccountByEmailRepository,
     LoadAccountByEmailRepository,
-    LoadAccountByTokenRepository,
     UpdateAccessTokenRepository,
 } from '@/data/protocols/db';
-import { MongoHelper } from '@/infra/db';
 
 export class AccountMongoRepository
     implements
@@ -54,26 +53,6 @@ export class AccountMongoRepository
                     lastName: 1,
                     subscriptionPlan: 1,
                     password: 1,
-                },
-            },
-        );
-        return account && MongoHelper.map(account);
-    }
-
-    async loadByToken(
-        accessToken: string,
-    ): Promise<LoadAccountByTokenRepository.Result> {
-        const accountCollection = MongoHelper.getCollection('accounts');
-        const account = await accountCollection.findOne(
-            {
-                accessToken,
-            },
-            {
-                projection: {
-                    _id: 1,
-                    firstName: 1,
-                    lastName: 1,
-                    subscriptionPlan: 1,
                 },
             },
         );
