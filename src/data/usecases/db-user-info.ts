@@ -1,16 +1,16 @@
-import { LoadAccountByTokenRepository } from '@/data/protocols';
+import { LoadAccountByIdRepository } from '@/data/protocols';
 import { UserInfo } from '@/domain/usecases';
 
 export class DbUserInfo implements UserInfo {
     constructor(
-        private readonly loadAccountByTokenRepository: LoadAccountByTokenRepository,
+        private readonly LoadAccountByIdRepository: LoadAccountByIdRepository,
     ) {}
 
     async getUserInfo(
         userInfoParams: UserInfo.Params,
     ): Promise<UserInfo.Result> {
-        const account = await this.loadAccountByTokenRepository.loadByToken(
-            userInfoParams.accessToken,
+        const account = await this.LoadAccountByIdRepository.loadById(
+            userInfoParams.id
         );
         if (account) {
             return account;

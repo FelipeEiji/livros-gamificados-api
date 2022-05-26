@@ -1,10 +1,10 @@
-export interface LoadAccountByTokenRepository {
-    loadByToken: (
-        accessToken: string,
-    ) => Promise<LoadAccountByTokenRepository.Result>;
+export interface LoadAccountByIdRepository {
+    loadById: (
+        id: string,
+    ) => Promise<LoadAccountByIdRepository.Result>;
 }
 
-export namespace LoadAccountByTokenRepository {
+export namespace LoadAccountByIdRepository {
     export type Result = {
         id: string;
         firstName: string;

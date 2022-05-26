@@ -6,7 +6,7 @@ export interface UserInfo {
 
 export namespace UserInfo {
     export type Params = {
-        accessToken: string;
+        id: string;
     };
 
     export type Result = {

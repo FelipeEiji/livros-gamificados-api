@@ -7,6 +7,7 @@ export class UserInfoController implements Controller {
 
     async handle(request: UserInfoController.Request): Promise<HttpResponse> {
         try {
+            console.log(request);
             const userInfoModel = await this.userInfo.getUserInfo(request);
             if (!userInfoModel) {
                 return unauthorized();
@@ -20,6 +21,6 @@ export class UserInfoController implements Controller {
 
 export namespace UserInfoController {
     export type Request = {
-        accessToken: string;
+        id: string;
     };
 }

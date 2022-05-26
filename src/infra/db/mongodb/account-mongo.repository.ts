@@ -2,7 +2,7 @@ import {
     AddAccountRepository,
     CheckAccountByEmailRepository,
     LoadAccountByEmailRepository,
-    LoadAccountByTokenRepository,
+    LoadAccountByIdRepository,
     UpdateAccessTokenRepository,
 } from '@/data/protocols/db';
 import { MongoHelper } from '@/infra/db';
@@ -12,7 +12,8 @@ export class AccountMongoRepository
         AddAccountRepository,
         CheckAccountByEmailRepository,
         LoadAccountByEmailRepository,
-        UpdateAccessTokenRepository
+        UpdateAccessTokenRepository,
+        LoadAccountByIdRepository
 {
     async add(
         data: AddAccountRepository.Params,
@@ -60,13 +61,13 @@ export class AccountMongoRepository
         return account && MongoHelper.map(account);
     }
 
-    async loadByToken(
-        accessToken: string,
-    ): Promise<LoadAccountByTokenRepository.Result> {
+    async loadById(
+        id: string,
+    ): Promise<LoadAccountByIdRepository.Result> {
         const accountCollection = MongoHelper.getCollection('accounts');
         const account = await accountCollection.findOne(
             {
-                accessToken,
+                _id: MongoHelper.convertStringIdToObjectId(id),
             },
             {
                 projection: {
@@ -77,6 +78,7 @@ export class AccountMongoRepository
                 },
             },
         );
+            
         return account && MongoHelper.map(account);
     }
 
