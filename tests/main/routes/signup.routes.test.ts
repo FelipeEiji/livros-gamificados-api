@@ -21,11 +21,16 @@ describe('SignUp Routes', () => {
     });
 
     test('Should return an account on success', async () => {
-        await request(app).post('/api/signup').send({
-            name: 'Rodrigo',
-            email: 'rodrigo.manguinho@gmail.com',
-            password: '123',
-            passwordConfirmation: '123',
-        });
+        await request(app)
+            .post('/api/signup')
+            .send({
+                firstName: 'Felipe',
+                lastName: 'Maruyama',
+                email: 'felipe.eiji@gmail.com',
+                password: '123',
+                passwordConfirmation: '123',
+                subscriptionPlan: 'VIP',
+            })
+            .expect(200);
     });
 });
