@@ -8,3 +8,19 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
+  api:
+    container_name: api-container
+    image: node:16
+    working_dir: /usr/src/livros-gamificados-api
+    restart: always
+    command: bash -c "npm install --only=prod && npm run debug"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/livros-gamificados-api
+    volumes:
+      - ./dist/:/usr/src/livros-gamificados-api/dist/
+      - ./package.json:/usr/src/livros-gamificados-api/package.json
+    ports:
+      - "3000:3000"
+      - "9222:9222"
+    links:
+      - mongo
